@@ -1,0 +1,10 @@
+{
+    "name": "proyecto_02_sistemas_distribuidos_back_end",
+    "version": "1.0.0",
+    "description": "Proyecto II Back end, sistemas distribuidos 2023 - UNA",
+    "author": "David Rojas Chavarria",
+    "license": "Unlicense",
+    "devDependencies": {
+        "mongodb": "latest"
+    }
+}
