@@ -27,11 +27,11 @@ Para ejecutar el proyecto deberá ejecutar los siguientes pasos:
 
 3. instalar el backend en Netlify con la siguiente configuración en el Build settings
    - Runtime: Not set
-   - Base directory: Backend
-   - Package directory: Backend/
+   - Base directory: /
+   - Package directory: Not set
    - Build command: Not set
    - Publish directory: Not set
-   - Functions directory: Backend/netlify/functions
+   - Functions directory: netlify/functions
    - Deploy log visibility: Logs are public
    - Build status: Active
 
