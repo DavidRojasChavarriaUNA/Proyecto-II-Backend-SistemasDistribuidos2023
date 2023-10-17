@@ -1,8 +1,6 @@
 'use strict';
 
-const {
-    amqplib
-} = require('amqplib');
+const amqplib = require('amqplib');
 
 const CreateConnection = async () => {
     const connection = await amqplib.connect(process.env.CLOUDAMQP_URL);
