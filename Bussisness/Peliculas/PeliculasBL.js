@@ -78,7 +78,7 @@ const InsertMovieMQ = (body) => {
         else {
             const response = await PeliculasMQ.InsertMovie(body);
             if (response)
-                resolve(CrearRespuesta(Codigos.CodeSuccess, "Película registrada con éxito en la cola", response.insertedId));
+                resolve(CrearRespuesta(Codigos.CodeSuccess, "Película registrada con éxito en la cola"));
             else
                 reject(CrearRespuesta(Codigos.CodeError, "Ocurrió un error al registrar la película en la cola"));
         }

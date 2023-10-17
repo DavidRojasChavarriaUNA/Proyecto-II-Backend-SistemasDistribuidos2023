@@ -78,7 +78,7 @@ const InsertAlbumMQ = (body) =>{
         else {
             const response = await AlbumesMQ.InsertAlbum(body);
             if (response)
-                resolve(CrearRespuesta(Codigos.CodeSuccess, "Álbum registrado con éxito en la cola", response.insertedId));
+                resolve(CrearRespuesta(Codigos.CodeSuccess, "Álbum registrado con éxito en la cola"));
             else
                 reject(CrearRespuesta(Codigos.CodeError, "Ocurrió un error al registrar el álbum en la cola"));
         }

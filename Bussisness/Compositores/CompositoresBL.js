@@ -78,7 +78,7 @@ const InsertComposerMQ = (body) => {
         else {
             const response = await CompositoresMQ.InsertComposer(body);
             if (response)
-                resolve(CrearRespuesta(Codigos.CodeSuccess, "Compositor registrado con éxito en la cola", response.insertedId));
+                resolve(CrearRespuesta(Codigos.CodeSuccess, "Compositor registrado con éxito en la cola"));
             else
                 reject(CrearRespuesta(Codigos.CodeError, "Ocurrió un error al registrar el compositor en la cola"));
         }
