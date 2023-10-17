@@ -31,7 +31,7 @@ const GetNextAlbum = async () => {
 const InsertAlbum = async (body) => {
     if (!body)
         throw 'El parametro body es requerido';
-    let mensajeAlbum = Queue.CreateNewMessageMQ(Actions.Insert, _, body);
+    let mensajeAlbum = Queue.CreateNewMessageMQ(Actions.Insert, undefined, body);
     const response = await Queue.SentMessageMQ(mqQueues.Albumes, mensajeAlbum);
     return response;
 }

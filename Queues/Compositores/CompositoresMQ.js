@@ -31,7 +31,7 @@ const GetNextComposer = async () => {
 const InsertComposer = async (body) => {
     if (!body)
         throw 'El parametro body es requerido';
-    let mensajeCompositor = Queue.CreateNewMessageMQ(Actions.Insert, _, body);
+    let mensajeCompositor = Queue.CreateNewMessageMQ(Actions.Insert, undefined, body);
     const response = await Queue.SentMessageMQ(mqQueues.Compositores, mensajeCompositor);
     return response;
 }

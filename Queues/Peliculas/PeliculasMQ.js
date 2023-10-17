@@ -31,7 +31,7 @@ const GetNextMovie = async () => {
 const InsertMovie = async (body) => {
     if (!body)
         throw 'El parametro body es requerido';
-    let mensajePelicula = Queue.CreateNewMessageMQ(Actions.Insert, _, body);
+    let mensajePelicula = Queue.CreateNewMessageMQ(Actions.Insert, undefined, body);
     const response = await Queue.SentMessageMQ(mqQueues.Peliculas, mensajePelicula);
     return response;
 }
