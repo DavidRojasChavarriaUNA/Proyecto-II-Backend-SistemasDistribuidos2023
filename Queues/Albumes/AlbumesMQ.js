@@ -58,8 +58,8 @@ const UpdateAlbum = async (body, albumId) => {
  * no response value expected for this operation
  **/
 const DeleteAlbum = async (albumId) => {
-    if (!body)
-        throw 'El parametro body es requerido';
+    if (!albumId)
+        throw 'El id es requerido';
     let mensajeAlbum = Queue.CreateNewMessageMQ(Actions.Delete, albumId);
     const response = await Queue.SentMessageMQ(mqQueues.Albumes, mensajeAlbum);
     return response;

@@ -31,7 +31,7 @@ const GetNextMovie = async () => {
 const InsertMovie = async (body) => {
     if (!body)
         throw 'El parametro body es requerido';
-    let mensajePelicula = Queue.CreateNewMessageMQ(Actions.Insert, _ , body);
+    let mensajePelicula = Queue.CreateNewMessageMQ(Actions.Insert, _, body);
     const response = await Queue.SentMessageMQ(mqQueues.Peliculas, mensajePelicula);
     return response;
 }
@@ -58,8 +58,8 @@ const UpdateMovie = async (body, peliculaId) => {
  * no response value expected for this operation
  **/
 const DeleteMovie = async (peliculaId) => {
-    if (!body)
-        throw 'El parametro body es requerido';
+    if (!peliculaId)
+        throw 'El id es requerido';
     let mensajePelicula = Queue.CreateNewMessageMQ(Actions.Delete, peliculaId);
     const response = await Queue.SentMessageMQ(mqQueues.Peliculas, mensajePelicula);
     return response;

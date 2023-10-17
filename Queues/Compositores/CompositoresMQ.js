@@ -58,8 +58,8 @@ const UpdateComposer = async (body, compositorId) => {
  * no response value expected for this operation
  **/
 const DeleteComposer = async (compositorId) => {
-    if (!body)
-        throw 'El parametro body es requerido';
+    if (!compositorId)
+        throw 'El id es requerido';
     let mensajeCompositor = Queue.CreateNewMessageMQ(Actions.Delete, compositorId);
     const response = await Queue.SentMessageMQ(mqQueues.Compositores, mensajeCompositor);
     return response;
