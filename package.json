@@ -5,6 +5,7 @@
     "author": "David Rojas Chavarria",
     "license": "Unlicense",
     "devDependencies": {
-        "mongodb": "latest"
+        "mongodb": "latest",
+		"amqplib": "latest"
     }
 }
