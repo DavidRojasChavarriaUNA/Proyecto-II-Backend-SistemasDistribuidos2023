@@ -36,14 +36,18 @@ Para ejecutar el proyecto deberá ejecutar los siguientes pasos:
    - Build status: Active
 
 4. Crear la variable de entorno MONGODB_URI con el string de conexión a la base de datos de MongoDB
+5. Crear la variable de entorno CLOUDAMQP_URL con el string de conexión al RabbitMQ
 
 URL en Netlify \
 https://proy-ii-faas-drch-sist-dist-una-2023.netlify.app/.netlify/functions
 
 Funciones disponibles
 - DeleteAlbum : Elimina un álbum
+- DeleteAlbumQueue : Elimina un álbum por medio de la cola
 - DeleteComposer : Elimina un compositor
+- DeleteComposerQueue : Elimina un compositor por medio de la cola
 - DeleteMovie : Elimina una película
+- DeleteMovieQueue : Elimina una película por medio de la cola
 - GetAlbumById : Obtiene un álbum por Id
 - GetComposerById : Obtiene un compositor por Id
 - GetMovieById : Obtiene una película por Id
@@ -51,8 +55,14 @@ Funciones disponibles
 - GetAllComposers : Obtiene todos los compositores
 - GetAllMovies : Obtiene todas las películas
 - InsertAlbum : Inserta un álbum
+- InsertAlbumQueue : Inserta un álbum por medio de la cola
 - InsertComposer : Inserta un compositor
+- InsertComposerQueue : Inserta un compositor por medio de la cola
 - InsertMovie : Inserta una película
+- InsertMovieQueue : Inserta una película por medio de la cola
 - UpdateAlbum : Actualiza un álbum
+- UpdateAlbumQueue : Actualiza un álbum por medio de la cola
 - UpdateComposer : Actualiza un compositor
+- UpdateComposerQueue : Actualiza un compositor por medio de la cola
 - UpdateMovie : Actualiza una película
+- UpdateMovieQueue : Actualiza una película por medio de la cola
