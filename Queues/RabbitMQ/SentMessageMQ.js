@@ -9,7 +9,7 @@ exports.SentMessageMQ = async (queueName, message) => {
     try {
         connectionRabbitMQ = await CreateConnectionRabbitMQ();
         channel = await connectionRabbitMQ.createChannel();
-        channel.assertQueue(queueName, {
+        await channel.assertQueue(queueName, {
             durable: true
         });
         const response = await channel.sendToQueue(queueName, Buffer.from(message));
