@@ -5,7 +5,6 @@ const {
     CrearRespuestaError,
     CrearRespuestaFAAS,
     Codigos,
-    GetDataToUpdate,
     GetIdFromUrl
 } = require('../../utils/Tools');
 
@@ -17,8 +16,7 @@ exports.handler = async (event, context) => {
     try {
         if (event.httpMethod == "OPTIONS") return CrearRespuestaOptions();
         const id = GetIdFromUrl(event);
-        const data = GetDataToUpdate(event);
-        const respuesta = await CompositoresBL.UpdateComposerMQ(data, id);
+        const respuesta = await CompositoresBL.UpdateComposerMQ(event.body, id);
         return CrearRespuestaFAAS(Codigos.OK, respuesta);
     } catch (error) {
         return CrearRespuestaError(Codigos.UnprocessableContent, error);
