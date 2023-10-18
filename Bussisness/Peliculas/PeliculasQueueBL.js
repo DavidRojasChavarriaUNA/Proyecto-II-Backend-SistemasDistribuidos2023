@@ -17,7 +17,7 @@ const {
     CrearRespuesta
 } = require('../../utils/Tools');
 
-const urlBase = process.env.NETLIFY_URI;
+const urlBase = "https://proy-ii-faas-drch-sist-dist-una-2023.netlify.app/.netlify/functions";
 
 /**
  * Crea una nueva película.
