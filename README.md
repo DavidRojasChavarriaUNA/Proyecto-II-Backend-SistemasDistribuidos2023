@@ -49,7 +49,7 @@ Para ejecutar el proyecto deberá ejecutar los siguientes pasos:
 
 4. Crear la variable de entorno MONGODB_URI con el string de conexión a la base de datos de MongoDB
 5. Crear la variable de entorno CLOUDAMQP_URL con el string de conexión al RabbitMQ
-6. Crear la variable de entorno NETLIFY_URI; con la url del servidor que contiene las funciones como servicio \
+6. Crear la variable de entorno NETLIFY_URL; con la url del servidor que contiene las funciones como servicio \
    Importante agregar a la url /.netlify/functions ya que esta es la posición de las FAAS \
    ejemplo https://proy-ii-faas-drch-sist-dist-una-2023.netlify.app/.netlify/functions
 

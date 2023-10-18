@@ -17,7 +17,7 @@ const {
     CrearRespuesta
 } = require('../../utils/Tools');
 
-const urlBase = process.env.NETLIFY_URI;
+const urlBase = process.env.NETLIFY_URL;
 
 /**
  * Crea un nuevo compositor en la cola.

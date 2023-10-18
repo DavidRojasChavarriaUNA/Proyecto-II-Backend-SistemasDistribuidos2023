@@ -17,8 +17,9 @@ const {
     CrearRespuesta
 } = require('../../utils/Tools');
 
-const urlBase = "https://proy-ii-faas-drch-sist-dist-una-2023.netlify.app/.netlify/functions";
+const urlBase = process.env.NETLIFY_URL;
 
+console.log(urlBase);
 /**
  * Crea una nueva película.
  *
@@ -122,6 +123,7 @@ const UpdateMovieUsingFAAS = async (peliculaId, pelicula) => {
 const DeleteMovieUsingFAAS = async (peliculaId) => {
     let respuestaServidor = undefined;
     try {
+        console.log();
         const respuestaHttp = await fetch(`${urlBase}/DeleteMovie/${peliculaId}`, {
             method: 'DELETE',
             headers: {
