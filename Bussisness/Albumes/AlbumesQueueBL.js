@@ -17,8 +17,6 @@ const {
     CrearRespuesta
 } = require('../../utils/Tools');
 
-const urlBase = process.env.NETLIFY_URL;
-
 /**
  * Crea un nuevo álbum en la cola.
  *
@@ -86,6 +84,7 @@ const DeleteAlbumMQ = (albumId) => {
 const InsertAlbumUsingFAAS = async (album) => {
     let respuestaServidor = undefined;
     try {
+        const urlBase = process.env.NETLIFY_URL;
         const respuestaHttp = await fetch(`${urlBase}/InsertAlbum`, {
             method: 'POST',
             headers: {
@@ -104,6 +103,7 @@ const InsertAlbumUsingFAAS = async (album) => {
 const UpdateAlbumUsingFAAS = async (albumId, album) => {
     let respuestaServidor = undefined;
     try {
+        const urlBase = process.env.NETLIFY_URL;
         const respuestaHttp = await fetch(`${urlBase}/UpdateAlbum/${albumId}`, {
             method: 'PUT',
             headers: {
@@ -122,6 +122,8 @@ const UpdateAlbumUsingFAAS = async (albumId, album) => {
 const DeleteAlbumUsingFAAS = async (albumId) => {
     let respuestaServidor = undefined;
     try {
+        const urlBase = process.env.NETLIFY_URL;
+        console.log({urlBase: urlBase});
         const respuestaHttp = await fetch(`${urlBase}/DeleteAlbum/${albumId}`, {
             method: 'DELETE',
             headers: {
