@@ -17,6 +17,8 @@ const {
     CrearRespuesta
 } = require('../../utils/Tools');
 
+const urlBase = process.env.NETLIFY_URI;
+
 /**
  * Crea un nuevo álbum en la cola.
  *
@@ -81,6 +83,58 @@ const DeleteAlbumMQ = (albumId) => {
     });
 }
 
+const InsertAlbumUsingFAAS = async (album) => {
+    let respuestaServidor = undefined;
+    try {
+        const respuestaHttp = await fetch(`${urlBase}/InsertAlbum`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(album)
+        });
+        respuestaServidor = await respuestaHttp.json();
+    } catch (error) {
+        respuestaServidor = CrearRespuesta(Codigos.CodeError, "Ocurrió un error al crear el álbum", error);
+    }
+    return respuestaServidor;
+}
+
+const UpdateAlbumUsingFAAS = async (albumId, album) => {
+    let respuestaServidor = undefined;
+    try {
+        const respuestaHttp = await fetch(`${urlBase}/UpdateAlbum/${albumId}`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(album)
+        });
+        respuestaServidor = await respuestaHttp.json();
+    } catch (error) {
+        respuestaServidor = CrearRespuesta(Codigos.CodeError, "Ocurrió un error al actualizar el álbum", error);
+    }
+    return respuestaServidor;
+}
+
+const DeleteAlbumUsingFAAS = async (albumId) => {
+    let respuestaServidor = undefined;
+    try {
+        const respuestaHttp = await fetch(`${urlBase}/DeleteAlbum/${albumId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+        respuestaServidor = await respuestaHttp.json();
+    } catch (error) {
+        respuestaServidor = CrearRespuesta(Codigos.CodeError, "Ocurrió un error al eliminar el álbum", error);
+    }
+    return respuestaServidor;
+}
+
 /**
  * Procesa los álbumes en la cola.
  *
@@ -95,10 +149,13 @@ const ProcessAlbumsQueueMQ = () => {
         do {
             switch (mensajeAlbum.method) {
                 case Actions.Insert:
+                    respuestas.push(await InsertAlbumUsingFAAS(mensajeAlbum.body));
                     break;
                 case Actions.Update:
+                    respuestas.push(await UpdateAlbumUsingFAAS(mensajeAlbum.id, mensajeAlbum.body));
                     break;
                 case Actions.Delete:
+                    respuestas.push(await DeleteAlbumUsingFAAS(mensajeAlbum.id));
                     break;
                 default:
                     respuestas.push(CrearRespuesta(Codigos.CodeError, `No hay implementación para la acción "${mensajeAlbum.method}"`, mensajeAlbum));

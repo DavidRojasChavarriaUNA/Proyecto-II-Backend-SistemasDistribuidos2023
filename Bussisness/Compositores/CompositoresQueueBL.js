@@ -17,6 +17,8 @@ const {
     CrearRespuesta
 } = require('../../utils/Tools');
 
+const urlBase = process.env.NETLIFY_URI;
+
 /**
  * Crea un nuevo compositor en la cola.
  *
@@ -81,6 +83,58 @@ const DeleteComposerMQ = (compositorId) => {
     });
 }
 
+const InsertComposerUsingFAAS = async (compositor) => {
+    let respuestaServidor = undefined;
+    try {
+        const respuestaHttp = await fetch(`${urlBase}/InsertComposer`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(compositor)
+        });
+        respuestaServidor = await respuestaHttp.json();
+    } catch (error) {
+        respuestaServidor = CrearRespuesta(Codigos.CodeError, "Ocurrió un error al crear el compositor", error);
+    }
+    return respuestaServidor;
+}
+
+const UpdateComposerUsingFAAS = async (compositorId, compositor) => {
+    let respuestaServidor = undefined;
+    try {
+        const respuestaHttp = await fetch(`${urlBase}/UpdateComposer/${compositorId}`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(compositor)
+        });
+        respuestaServidor = await respuestaHttp.json();
+    } catch (error) {
+        respuestaServidor = CrearRespuesta(Codigos.CodeError, "Ocurrió un error al actualizar el compositor", error);
+    }
+    return respuestaServidor;
+}
+
+const DeleteComposerUsingFAAS = async (compositorId) => {
+    let respuestaServidor = undefined;
+    try {
+        const respuestaHttp = await fetch(`${urlBase}/DeleteComposer/${compositorId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+        respuestaServidor = await respuestaHttp.json();
+    } catch (error) {
+        respuestaServidor = CrearRespuesta(Codigos.CodeError, "Ocurrió un error al eliminar el compositor", error);
+    }
+    return respuestaServidor;
+}
+
 /**
  * Procesa los compositores en la cola
  *
@@ -95,10 +149,13 @@ const ProcessComposersQueueMQ = () => {
         do {
             switch (mensajeComposer.method) {
                 case Actions.Insert:
+                    respuestas.push(await InsertComposerUsingFAAS(mensajeComposer.body));
                     break;
                 case Actions.Update:
+                    respuestas.push(await UpdateComposerUsingFAAS(mensajeComposer.id, mensajeComposer.body));
                     break;
                 case Actions.Delete:
+                    respuestas.push(await DeleteComposerUsingFAAS(mensajeComposer.id));
                     break;
                 default:
                     respuestas.push(CrearRespuesta(Codigos.CodeError, `No hay implementación para la acción "${mensajeComposer.method}"`, mensajeComposer));

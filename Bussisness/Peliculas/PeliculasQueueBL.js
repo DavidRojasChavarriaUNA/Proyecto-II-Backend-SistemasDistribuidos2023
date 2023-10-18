@@ -17,6 +17,7 @@ const {
     CrearRespuesta
 } = require('../../utils/Tools');
 
+const urlBase = process.env.NETLIFY_URI;
 
 /**
  * Crea una nueva película.
@@ -82,6 +83,58 @@ const DeleteMovieMQ = (peliculaId) => {
     });
 }
 
+const InsertMovieUsingFAAS = async (pelicula) => {
+    let respuestaServidor = undefined;
+    try {
+        const respuestaHttp = await fetch(`${urlBase}/InsertMovie`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(pelicula)
+        });
+        respuestaServidor = await respuestaHttp.json();
+    } catch (error) {
+        respuestaServidor = CrearRespuesta(Codigos.CodeError, "Ocurrió un error al crear la película", error);
+    }
+    return respuestaServidor;
+}
+
+const UpdateMovieUsingFAAS = async (peliculaId, pelicula) => {
+    let respuestaServidor = undefined;
+    try {
+        const respuestaHttp = await fetch(`${urlBase}/UpdateMovie/${peliculaId}`, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(pelicula)
+        });
+        respuestaServidor = await respuestaHttp.json();
+    } catch (error) {
+        respuestaServidor = CrearRespuesta(Codigos.CodeError, "Ocurrió un error al actualizar la película", error);
+    }
+    return respuestaServidor;
+}
+
+const DeleteMovieUsingFAAS = async (peliculaId) => {
+    let respuestaServidor = undefined;
+    try {
+        const respuestaHttp = await fetch(`${urlBase}/DeleteMovie/${peliculaId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+        respuestaServidor = await respuestaHttp.json();
+    } catch (error) {
+        respuestaServidor = CrearRespuesta(Codigos.CodeError, "Ocurrió un error al eliminar la película", error);
+    }
+    return respuestaServidor;
+}
+
 /**
  * Procesa las peliculas en la cola
  *
@@ -96,10 +149,13 @@ const ProcessMoviesQueueMQ = () => {
         do {
             switch (mensajePelicula.method) {
                 case Actions.Insert:
+                    respuestas.push(await InsertMovieUsingFAAS(mensajePelicula.body));
                     break;
                 case Actions.Update:
+                    respuestas.push(await UpdateMovieUsingFAAS(mensajePelicula.id, mensajePelicula.body));
                     break;
                 case Actions.Delete:
+                    respuestas.push(await DeleteMovieUsingFAAS(mensajePelicula.id));
                     break;
                 default:
                     respuestas.push(CrearRespuesta(Codigos.CodeError, `No hay implementación para la acción "${mensajePelicula.method}"`, mensajePelicula));
@@ -107,7 +163,7 @@ const ProcessMoviesQueueMQ = () => {
             mensajePelicula = await PeliculasMQ.GetNextMovie();
         } while (mensajePelicula);
 
-        resolve(CrearRespuesta(Codigos.CodeSuccess, "Películas en la cola procesados.", respuestas));
+        resolve(CrearRespuesta(Codigos.CodeSuccess, "Películas en la cola procesadas.", respuestas));
     });
 }
 
