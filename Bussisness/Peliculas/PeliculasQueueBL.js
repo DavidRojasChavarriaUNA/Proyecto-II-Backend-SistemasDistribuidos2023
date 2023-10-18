@@ -14,12 +14,10 @@ const {
 
 const {
     Codigos,
-    CrearRespuesta
+    CrearRespuesta,
+    GetURLNetlify
 } = require('../../utils/Tools');
 
-const urlBase = process.env.NETLIFY_URL;
-
-console.log(urlBase);
 /**
  * Crea una nueva película.
  *
@@ -87,7 +85,7 @@ const DeleteMovieMQ = (peliculaId) => {
 const InsertMovieUsingFAAS = async (pelicula) => {
     let respuestaServidor = undefined;
     try {
-        const respuestaHttp = await fetch(`${urlBase}/InsertMovie`, {
+        const respuestaHttp = await fetch(`${GetURLNetlify()}/InsertMovie`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -105,7 +103,7 @@ const InsertMovieUsingFAAS = async (pelicula) => {
 const UpdateMovieUsingFAAS = async (peliculaId, pelicula) => {
     let respuestaServidor = undefined;
     try {
-        const respuestaHttp = await fetch(`${urlBase}/UpdateMovie/${peliculaId}`, {
+        const respuestaHttp = await fetch(`${GetURLNetlify()}/UpdateMovie/${peliculaId}`, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
@@ -124,7 +122,7 @@ const DeleteMovieUsingFAAS = async (peliculaId) => {
     let respuestaServidor = undefined;
     try {
         console.log();
-        const respuestaHttp = await fetch(`${urlBase}/DeleteMovie/${peliculaId}`, {
+        const respuestaHttp = await fetch(`${GetURLNetlify()}/DeleteMovie/${peliculaId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

@@ -64,25 +64,29 @@ exports.CrearRespuestaFAAS = (statusCode, body) => {
     };
 }
 
-const GenerateId = ()=> {
-    const id = Math.floor(Math.random()*100000000);
+const GenerateId = () => {
+    const id = Math.floor(Math.random() * 100000000);
     return id;
 }
 
-exports.GetIdFromUrl = (event)=> {
+exports.GetIdFromUrl = (event) => {
     const id = parseInt(event.path.split("/").reverse()[0]);
     return id;
 }
 
-exports.GetDataToInsert = (event) =>{
+exports.GetDataToInsert = (event) => {
     const data = JSON.parse(event.body);
     data._id = parseInt(data._id);
-    if(data._id <= 0)
+    if (data._id <= 0)
         data._id = GenerateId();
     return data;
 }
 
-exports.GetDataToUpdate = (event) =>{
+exports.GetDataToUpdate = (event) => {
     const data = JSON.parse(event.body);
     return data;
+}
+
+exports.GetURLNetlify = () => {
+    return process.env.NETLIFY_URL;
 }

@@ -14,7 +14,8 @@ const {
 
 const {
     Codigos,
-    CrearRespuesta
+    CrearRespuesta,
+    GetURLNetlify
 } = require('../../utils/Tools');
 
 /**
@@ -84,8 +85,7 @@ const DeleteAlbumMQ = (albumId) => {
 const InsertAlbumUsingFAAS = async (album) => {
     let respuestaServidor = undefined;
     try {
-        const urlBase = process.env.NETLIFY_URL;
-        const respuestaHttp = await fetch(`${urlBase}/InsertAlbum`, {
+        const respuestaHttp = await fetch(`${GetURLNetlify()}/InsertAlbum`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -103,8 +103,7 @@ const InsertAlbumUsingFAAS = async (album) => {
 const UpdateAlbumUsingFAAS = async (albumId, album) => {
     let respuestaServidor = undefined;
     try {
-        const urlBase = process.env.NETLIFY_URL;
-        const respuestaHttp = await fetch(`${urlBase}/UpdateAlbum/${albumId}`, {
+        const respuestaHttp = await fetch(`${GetURLNetlify()}/UpdateAlbum/${albumId}`, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
@@ -122,9 +121,7 @@ const UpdateAlbumUsingFAAS = async (albumId, album) => {
 const DeleteAlbumUsingFAAS = async (albumId) => {
     let respuestaServidor = undefined;
     try {
-        const urlBase = process.env.NETLIFY_URL;
-        console.log({urlBase: urlBase});
-        const respuestaHttp = await fetch(`${urlBase}/DeleteAlbum/${albumId}`, {
+        const respuestaHttp = await fetch(`${GetURLNetlify()}/DeleteAlbum/${albumId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

@@ -14,10 +14,9 @@ const {
 
 const {
     Codigos,
-    CrearRespuesta
+    CrearRespuesta,
+    GetURLNetlify
 } = require('../../utils/Tools');
-
-const urlBase = process.env.NETLIFY_URL;
 
 /**
  * Crea un nuevo compositor en la cola.
@@ -86,7 +85,7 @@ const DeleteComposerMQ = (compositorId) => {
 const InsertComposerUsingFAAS = async (compositor) => {
     let respuestaServidor = undefined;
     try {
-        const respuestaHttp = await fetch(`${urlBase}/InsertComposer`, {
+        const respuestaHttp = await fetch(`${GetURLNetlify()}/InsertComposer`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -104,7 +103,7 @@ const InsertComposerUsingFAAS = async (compositor) => {
 const UpdateComposerUsingFAAS = async (compositorId, compositor) => {
     let respuestaServidor = undefined;
     try {
-        const respuestaHttp = await fetch(`${urlBase}/UpdateComposer/${compositorId}`, {
+        const respuestaHttp = await fetch(`${GetURLNetlify()}/UpdateComposer/${compositorId}`, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
@@ -122,7 +121,7 @@ const UpdateComposerUsingFAAS = async (compositorId, compositor) => {
 const DeleteComposerUsingFAAS = async (compositorId) => {
     let respuestaServidor = undefined;
     try {
-        const respuestaHttp = await fetch(`${urlBase}/DeleteComposer/${compositorId}`, {
+        const respuestaHttp = await fetch(`${GetURLNetlify()}/DeleteComposer/${compositorId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
