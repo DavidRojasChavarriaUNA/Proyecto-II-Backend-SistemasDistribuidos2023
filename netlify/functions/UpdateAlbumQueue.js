@@ -9,14 +9,14 @@ const {
 } = require('../../utils/Tools');
 
 const {
-    AlbumesBL
-} = require('../../Bussisness/Albumes/AlbumesBL');
+    AlbumesQueueBL
+} = require('../../Bussisness/Albumes/AlbumesQueueBL');
 
 exports.handler = async (event, context) => {
     try {
         if (event.httpMethod == "OPTIONS") return CrearRespuestaOptions();
         const id = GetIdFromUrl(event);
-        const respuesta = await AlbumesBL.UpdateAlbumMQ(event.body, id);
+        const respuesta = await AlbumesQueueBL.UpdateAlbumMQ(event.body, id);
         return CrearRespuestaFAAS(Codigos.OK, respuesta);
     } catch (error) {
         return CrearRespuestaError(Codigos.UnprocessableContent, error);

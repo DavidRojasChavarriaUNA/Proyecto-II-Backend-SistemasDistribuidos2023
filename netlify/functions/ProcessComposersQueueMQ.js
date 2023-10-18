@@ -14,7 +14,7 @@ const {
 exports.handler = async (event, context) => {
     try {
         if (event.httpMethod == "OPTIONS") return CrearRespuestaOptions();
-        const respuesta = await CompositoresQueueBL.InsertComposerMQ(event.body);
+        const respuesta = await CompositoresQueueBL.ProcessComposersQueueMQ();
         return CrearRespuestaFAAS(Codigos.OK, respuesta);
     } catch (error) {
         return CrearRespuestaError(Codigos.UnprocessableContent, error);

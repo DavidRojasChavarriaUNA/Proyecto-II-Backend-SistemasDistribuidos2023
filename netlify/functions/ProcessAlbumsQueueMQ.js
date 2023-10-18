@@ -8,13 +8,13 @@ const {
 } = require('../../utils/Tools');
 
 const {
-    CompositoresQueueBL
-} = require('../../Bussisness/Compositores/CompositoresQueueBL');
+    AlbumesQueueBL
+} = require('../../Bussisness/Albumes/AlbumesQueueBL');
 
 exports.handler = async (event, context) => {
     try {
         if (event.httpMethod == "OPTIONS") return CrearRespuestaOptions();
-        const respuesta = await CompositoresQueueBL.InsertComposerMQ(event.body);
+        const respuesta = await AlbumesQueueBL.ProcessAlbumsQueueMQ();
         return CrearRespuestaFAAS(Codigos.OK, respuesta);
     } catch (error) {
         return CrearRespuestaError(Codigos.UnprocessableContent, error);

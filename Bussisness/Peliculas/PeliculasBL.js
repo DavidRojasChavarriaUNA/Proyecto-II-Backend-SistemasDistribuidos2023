@@ -5,10 +5,6 @@ const {
 } = require('../../DataAccess/Peliculas/PeliculasDA');
 
 const {
-    PeliculasMQ
-} = require('../../Queues/Peliculas/PeliculasMQ')
-
-const {
     Codigos,
     CrearRespuesta
 } = require('../../utils/Tools');
@@ -65,27 +61,6 @@ const InsertMovie = (body) => {
 }
 
 /**
- * Crea una nueva película.
- *
- * body Movie Datos película
- * no response value expected for this operation
- **/
-const InsertMovieMQ = (body) => {
-    return new Promise(async (resolve, reject) => {
-        const pelicula = await PeliculasDA.GetMovieByTitle(body.title);
-        if (pelicula)
-            return resolve(CrearRespuesta(Codigos.CodeNotFound, "Ya existe una película con el título indicado"));
-        else {
-            const response = await PeliculasMQ.InsertMovie(body);
-            if (response)
-                resolve(CrearRespuesta(Codigos.CodeSuccess, "Película registrada con éxito en la cola"));
-            else
-                reject(CrearRespuesta(Codigos.CodeError, "Ocurrió un error al registrar la película en la cola"));
-        }
-    });
-}
-
-/**
  * Actualiza la información de una película.
  *
  * body Movie Datos película
@@ -103,28 +78,6 @@ const UpdateMovie = (body, peliculaId) => {
                 resolve(CrearRespuesta(Codigos.CodeSuccess, "Película actualizada con éxito"));
             else
                 reject(CrearRespuesta(Codigos.CodeError, "Ocurrió un error al actualizar la película"));
-        }
-    });
-}
-
-/**
- * Actualiza la información de una película.
- *
- * body Movie Datos película
- * peliculaId String 
- * no response value expected for this operation
- **/
-const UpdateMovieMQ = (body, peliculaId) => {
-    return new Promise(async (resolve, reject) => {
-        const pelicula = await PeliculasDA.GetMovieById(peliculaId);
-        if (!pelicula)
-            return resolve(CrearRespuesta(Codigos.CodeNotFound, "Película no encontrada"));
-        else {
-            const response = await PeliculasMQ.UpdateMovie(body, peliculaId);
-            if (response)
-                resolve(CrearRespuesta(Codigos.CodeSuccess, "Película actualizada con éxito en la cola"));
-            else
-                reject(CrearRespuesta(Codigos.CodeError, "Ocurrió un error al actualizar la película en la cola"));
         }
     });
 }
@@ -150,34 +103,10 @@ const DeleteMovie = (peliculaId) => {
     });
 }
 
-/**
- * Elimina una película por id.
- *
- * peliculaId String 
- * no response value expected for this operation
- **/
-const DeleteMovieMQ = (peliculaId) => {
-    return new Promise(async (resolve, reject) => {
-        const pelicula = await PeliculasDA.GetMovieById(peliculaId);
-        if (!pelicula)
-            return resolve(CrearRespuesta(Codigos.CodeNotFound, "Película no encontrada"));
-        else {
-            const response = await PeliculasMQ.DeleteMovie(peliculaId);
-            if (response)
-                resolve(CrearRespuesta(Codigos.CodeSuccess, "Película eliminada con éxito en la cola"));
-            else
-                reject(CrearRespuesta(Codigos.CodeError, "Ocurrió un error al eliminar la película en la cola"));
-        }
-    });
-}
-
 exports.PeliculasBL = {
     GetAllMovies,
     GetMovieById,
     InsertMovie,
-    InsertMovieMQ,
     UpdateMovie,
-    UpdateMovieMQ,
-    DeleteMovie,
-    DeleteMovieMQ
+    DeleteMovie
 }

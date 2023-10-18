@@ -5,10 +5,6 @@ const {
 } = require('../../DataAccess/Albumes/AlbumesDA');
 
 const {
-    AlbumesMQ
-} = require('../../Queues/Albumes/AlbumesMQ')
-
-const {
     Codigos,
     CrearRespuesta
 } = require('../../utils/Tools');
@@ -65,27 +61,6 @@ const InsertAlbum = (body) =>{
 }
 
 /**
- * Crea un nuevo álbum en la cola.
- *
- * body Album Datos álbume
- * no response value expected for this operation
- **/
-const InsertAlbumMQ = (body) =>{
-    return new Promise(async (resolve, reject) => {
-        const album = await AlbumesDA.GetAlbumByTitle(body.title);
-        if (album)
-            return resolve(CrearRespuesta(Codigos.CodeNotFound, "Ya existe un álbum con el nombre indicado"));
-        else {
-            const response = await AlbumesMQ.InsertAlbum(body);
-            if (response)
-                resolve(CrearRespuesta(Codigos.CodeSuccess, "Álbum registrado con éxito en la cola"));
-            else
-                reject(CrearRespuesta(Codigos.CodeError, "Ocurrió un error al registrar el álbum en la cola"));
-        }
-    });
-}
-
-/**
  * Actualiza la información de un álbum.
  *
  * body Album Datos álbum
@@ -103,28 +78,6 @@ const UpdateAlbum = (body, albumId) => {
                 resolve(CrearRespuesta(Codigos.CodeSuccess, "Álbum actualizado con éxito"));
             else
                 reject(CrearRespuesta(Codigos.CodeError, "Ocurrió un error al actualizar el álbum"));
-        }
-    });
-}
-
-/**
- * Actualiza la información de un álbum.
- *
- * body Album Datos álbum
- * albumId Integer 
- * no response value expected for this operation
- **/
-const UpdateAlbumMQ = (body, albumId) => {
-    return new Promise(async (resolve, reject) => {
-        const album = await AlbumesDA.GetAlbumById(albumId);
-        if (!album)
-            return resolve(CrearRespuesta(Codigos.CodeNotFound, "Álbum no encontrado"));
-        else {
-            const response = await AlbumesMQ.UpdateAlbum(body, albumId);
-            if (response)
-                resolve(CrearRespuesta(Codigos.CodeSuccess, "Álbum actualizado con éxito en la cola"));
-            else
-                reject(CrearRespuesta(Codigos.CodeError, "Ocurrió un error al actualizar el álbum en la cola"));
         }
     });
 }
@@ -150,34 +103,10 @@ const DeleteAlbum = (albumId) => {
     });
 }
 
-/**
- * Elimina un álbum por id.
- *
- * albumId Integer 
- * no response value expected for this operation
- **/
-const DeleteAlbumMQ = (albumId) => {
-    return new Promise(async (resolve, reject) => {
-        const album = await AlbumesDA.GetAlbumById(albumId);
-        if (!album)
-            return resolve(CrearRespuesta(Codigos.CodeNotFound, "Álbum no encontrado"));
-        else {
-            const response = await AlbumesMQ.DeleteAlbum(albumId);
-            if (response)
-                resolve(CrearRespuesta(Codigos.CodeSuccess, "Álbum eliminado con éxito en la cola"));
-            else
-                reject(CrearRespuesta(Codigos.CodeError, "Ocurrió un error al eliminar el álbum en la cola"));
-        }
-    });
-}
-
 exports.AlbumesBL = {
     GetAllAlbumes,
     GetAlbumById,
     InsertAlbum,
-    InsertAlbumMQ,
     UpdateAlbum,
-    UpdateAlbumMQ,
-    DeleteAlbum,
-    DeleteAlbumMQ
+    DeleteAlbum
 }

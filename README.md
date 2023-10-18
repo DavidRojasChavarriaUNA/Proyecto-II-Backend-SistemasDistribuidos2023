@@ -66,3 +66,6 @@ Funciones disponibles
 - UpdateComposerQueue : Actualiza un compositor por medio de la cola
 - UpdateMovie : Actualiza una película
 - UpdateMovieQueue : Actualiza una película por medio de la cola
+- ProcessAlbumsQueueMQ : Procesa los álbumes en la cola
+- ProcessComposersQueueMQ: Procesa los compositores en la cola
+- ProcessMoviesQueueMQ: Procesa las peliculas en la cola
